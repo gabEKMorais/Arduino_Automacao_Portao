@@ -1,0 +1,36 @@
+#Copyright
+#Inicia bibliotecas...
+-
+#Inicia parametros
+MicroAbre = pino_MA
+MicroFecha = pino_MB
+Botoeira = pino_Rele
+dia = [dias para ficar aberto]
+
+#Comunicação com modulo rtc
+
+#Fuções
+AtivarRele () {
+    Ativa Botoeira
+    Espera (X milissegundos $RTC)
+    Desativa Botoeira
+}
+
+#Inicia programa
+Repetir Sempre:
+    hoje = (dia atual #RTC )
+    Espera (10 Segundos $RTC)
+    Se (MicroAbre == aberta):
+        Espera (60 segundos $RTC)
+        Se (MicroAbre == aberta):
+            Chama AtivarRele()
+    Se (hoje esta em dia):
+        Enquanto (hora > HorarioInicialA E hora < HorarioFinalA):
+            Espera (10 Segundos $RTC)
+            Se (MicroFecha == aberta):
+                Espera (60 segundos $RTC)
+                Se (MicroFecha == aberta):
+                    Chama AtivarRele()
+    # Repetir esse ultimo para quais horarios forem necessarios e criar um proprio para sabados
+    Se (Hoje == sabado):
+        Repete anterior    
